@@ -1,0 +1,43 @@
+{
+  "rules": {
+    /* Disable Everything  */
+    ".read"  : false,
+    ".write" : false,
+
+    /* Self - Secure Accounts  */
+    "user": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid"
+      }
+    },
+
+    /* Organization - Role Permissions  */
+    "report": {
+      "$uid": {
+        ".read": "if request.auth.uid == request.resource.data.createdBy",
+        ".update": "if request.auth.uid == resource.data.createdBy || resource.data['contributors']['raw'][(request.auth.uid)] == true",
+        ".delete": "if request.auth.uid == resource.data.createdBy",
+        "create": "if request.auth.uid == request.resource.data.createdBy"
+      }
+    },
+    
+    /* Infrastructure - Role Permissions  */
+    "infrastructure": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+
+    /* Mutate - Role Permissions  */
+    "mutate": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    }
+
+  }
+}
+
